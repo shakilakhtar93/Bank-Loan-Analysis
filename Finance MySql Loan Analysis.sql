@@ -4,16 +4,8 @@ alter table finance drop column month_column;
 select * from finance;
 -- 1-Total Loan Applications: We need to calculate the total number of loan applications received during a 
 -- specified period. Additionally, it is essential to monitor the Month-to-Date (MTD) Loan Applications 
--- and track changes Month-over-Month (MoM).
-select count(id) as total_application, monthname(issue_date) as month_name
-from finance group by monthname(issue_date), year(issue_date) order by total_application;
-
-select issue_month, total_application,
-t.total_application-lag(total_application) over() as track_change from 
-(select issue_month, count(id) as total_application from finance
-group by issue_month order by
-FIELD(issue_month, 'January', 'February', 'March', 'April', 'May', 'June', 
-               'July', 'August', 'September', 'October', 'November', 'December')) t;
+-- and track changes Month-over-Month (MoM)
+-- Create Month to Date track and check what is total number of good, bad, current loan overall all application
 
 select issue_month, total_application,
 t.total_application-lag(total_application) over() as track_change,
